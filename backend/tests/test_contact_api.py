@@ -30,7 +30,7 @@ class TestHealth:
         assert r.status_code == 200
         data = r.json()
         assert data["status"] == "ok"
-        assert data["resend_configured"] is False
+        assert not data["resend_configured"]
         assert data["sender"] == "onboarding@resend.dev"
         assert data["recipient"] == "kapooreng149@gmail.com"
 

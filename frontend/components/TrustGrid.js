@@ -1,7 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
+import {
+  FADE_HIDDEN,
+  FADE_SHOW,
+  VIEWPORT_ONCE_20,
+} from "@/lib/motion";
 
-const clients = [
+const CLIENTS = [
   "RPG Steel",
   "DSC Industries",
   "MIA Fabricators",
@@ -11,6 +16,8 @@ const clients = [
   "Iron Forge Co.",
   "Rajputana Rolling",
 ];
+const CLIENT_STAGGER_DELAY_S = 0.04;
+const CLIENT_TILE_DURATION_S = 0.4;
 
 export default function TrustGrid() {
   return (
@@ -37,13 +44,16 @@ export default function TrustGrid() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-black border-y-2 border-black">
-        {clients.map((name, i) => (
+        {CLIENTS.map((name, i) => (
           <motion.div
             key={name}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.04 }}
+            initial={FADE_HIDDEN}
+            whileInView={FADE_SHOW}
+            viewport={VIEWPORT_ONCE_20}
+            transition={{
+              duration: CLIENT_TILE_DURATION_S,
+              delay: i * CLIENT_STAGGER_DELAY_S,
+            }}
             className="bg-white p-6 md:p-10 flex flex-col justify-between min-h-[140px] md:min-h-[180px] group hover:bg-black transition-colors cursor-default"
           >
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#4A4A4A] group-hover:text-[#FF3B00] transition-colors">

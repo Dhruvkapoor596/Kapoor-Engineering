@@ -4,7 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-const services = [
+const PREVIEW_HIDDEN = { opacity: 0, scale: 0.9, x: 30 };
+const PREVIEW_SHOW = { opacity: 1, scale: 1, x: 0 };
+const PREVIEW_EXIT = { opacity: 0, scale: 0.95 };
+const PREVIEW_TRANSITION = { duration: 0.25, ease: "easeOut" };
+
+const SERVICES = [
   {
     num: "01",
     title: "Precision Machining",
@@ -52,7 +57,7 @@ export default function ServicesStrip() {
       </div>
 
       <div className="relative">
-        {services.map((s, idx) => (
+        {SERVICES.map((s, idx) => (
           <Link
             key={s.num}
             href="/services"
@@ -84,22 +89,22 @@ export default function ServicesStrip() {
           {hovered !== null && (
             <motion.div
               key={hovered}
-              initial={{ opacity: 0, scale: 0.9, x: 30 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={PREVIEW_HIDDEN}
+              animate={PREVIEW_SHOW}
+              exit={PREVIEW_EXIT}
+              transition={PREVIEW_TRANSITION}
               className="hidden lg:block fixed top-1/2 right-12 -translate-y-1/2 z-20 w-[320px] h-[420px] border-2 border-black shadow-brutal pointer-events-none bg-white overflow-hidden"
             >
               <Image
-                src={services[hovered].img}
-                alt={services[hovered].title}
+                src={SERVICES[hovered].img}
+                alt={SERVICES[hovered].title}
                 fill
                 sizes="320px"
                 className="object-cover grayscale"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-[#FF3B00] text-white p-3 font-mono text-[10px] uppercase tracking-[0.25em] flex justify-between">
-                <span>{services[hovered].num}</span>
-                <span>{services[hovered].tags.join(" · ")}</span>
+                <span>{SERVICES[hovered].num}</span>
+                <span>{SERVICES[hovered].tags.join(" · ")}</span>
               </div>
             </motion.div>
           )}

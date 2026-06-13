@@ -1,15 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { whatsappUrl } from "@/lib/site";
+
+const BACK_TO_TOP_SCROLL_THRESHOLD_PX = 600;
 
 export default function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
 
+  const handleScroll = useCallback(() => {
+    setShowTop(window.scrollY > BACK_TO_TOP_SCROLL_THRESHOLD_PX);
+  }, []);
+
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 600);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
@@ -19,7 +28,7 @@ export default function FloatingActions() {
     >
       {showTop && (
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={scrollToTop}
           aria-label="Back to top"
           data-testid="back-to-top-btn"
           className="w-12 h-12 bg-white border-2 border-black text-black flex items-center justify-center font-mono text-xs uppercase tracking-widest hover-brutal"

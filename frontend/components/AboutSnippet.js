@@ -2,8 +2,14 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
+import {
+  FADE_UP_HIDDEN,
+  FADE_UP_SHOW,
+  VIEWPORT_ONCE_30,
+  TRANSITION_SMOOTH_07,
+} from "@/lib/motion";
 
-const stats = [
+const STATS = [
   { num: "01", k: "Established", v: "2007" },
   { num: "02", k: "Workshop", v: "Alwar, IN" },
   { num: "03", k: "Projects", v: "120+" },
@@ -25,10 +31,10 @@ export default function AboutSnippet() {
           </p>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
+            initial={FADE_UP_HIDDEN}
+            whileInView={FADE_UP_SHOW}
+            viewport={VIEWPORT_ONCE_30}
+            transition={TRANSITION_SMOOTH_07}
             className="relative"
           >
             <h2 className="font-display uppercase leading-[0.82] tracking-brutal text-[18vw] md:text-[12vw] lg:text-[14vw] -mb-6">
@@ -43,7 +49,7 @@ export default function AboutSnippet() {
           </motion.div>
 
           <div className="mt-12 md:mt-16 grid grid-cols-2 gap-px bg-black border border-black">
-            {stats.map((s) => (
+            {STATS.map((s) => (
               <div
                 key={s.num}
                 className="bg-[#F4F4F0] p-4 md:p-5 font-mono text-[10px] uppercase tracking-[0.2em]"

@@ -1,32 +1,41 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { telUrl } from "@/lib/site";
 
-const links = [
+const NAV_LINKS = [
   { label: "Index", href: "/", num: "01" },
   { label: "Catalog", href: "/products", num: "02" },
   { label: "Capabilities", href: "/services", num: "03" },
   { label: "Works", href: "/projects", num: "04" },
   { label: "Studio", href: "/about", num: "05" },
 ];
+const NAV_SCROLL_SHADOW_THRESHOLD_PX = 4;
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > NAV_SCROLL_SHADOW_THRESHOLD_PX);
   }, []);
 
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Auto-close mobile menu when route changes. Using the render-phase
+  // "derive-state-on-prop-change" pattern (instead of useEffect) keeps this
+  // compatible with React 19's react-hooks/set-state-in-effect rule.
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   return (
     <header
@@ -57,7 +66,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex col-span-7 border-r-2 border-black">
-          {links.map((l) => {
+          {NAV_LINKS.map((l) => {
             const active = pathname === l.href;
             return (
               <Link
@@ -105,7 +114,7 @@ export default function Navbar() {
           data-testid="mobile-menu"
           className="md:hidden border-t-2 border-black bg-white"
         >
-          {[...links, { label: "Get Quote", href: "/contact", num: "06" }].map(
+          {[...NAV_LINKS, { label: "Get Quote", href: "/contact", num: "06" }].map(
             (l) => (
               <Link
                 key={l.href}

@@ -107,3 +107,4 @@ test_result.md
 frontend_old_react_backup/
 frontend/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
 frontend/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
+frontend/.next/dev/cache/turbopack/23c46498/00000598.sst

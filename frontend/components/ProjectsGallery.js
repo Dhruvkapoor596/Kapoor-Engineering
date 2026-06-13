@@ -2,6 +2,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import {
+  FADE_UP_HIDDEN,
+  FADE_UP_SHOW,
+  VIEWPORT_ONCE_20,
+  EASE_OUT_EXPO,
+} from "@/lib/motion";
+
+const PROJECT_STAGGER_DELAY_S = 0.1;
+const PROJECT_REVEAL_DURATION_S = 0.6;
 
 const projects = [
   {
@@ -67,10 +76,14 @@ export default function ProjectsGallery() {
         {projects.map((p, i) => (
           <motion.article
             key={p.num}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: i * 0.1 }}
+            initial={FADE_UP_HIDDEN}
+            whileInView={FADE_UP_SHOW}
+            viewport={VIEWPORT_ONCE_20}
+            transition={{
+              duration: PROJECT_REVEAL_DURATION_S,
+              delay: i * PROJECT_STAGGER_DELAY_S,
+              ease: EASE_OUT_EXPO,
+            }}
             className={`col-span-12 ${p.span} bg-white relative group cursor-pointer overflow-hidden`}
           >
             <div className="relative aspect-[4/3] lg:aspect-auto lg:h-[440px] overflow-hidden">

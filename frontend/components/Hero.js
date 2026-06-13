@@ -2,9 +2,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import {
+  FADE_HIDDEN,
+  FADE_SHOW,
+  FADE_UP_SM_HIDDEN,
+  FADE_UP_LG_HIDDEN,
+  FADE_UP_SHOW,
+  SCALE_X_HIDDEN,
+  SCALE_X_SHOW,
+  EASE_OUT_EXPO,
+} from "@/lib/motion";
 
 const HERO_IMG =
   "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?crop=entropy&cs=srgb&fm=jpg&w=1920&q=85";
+
+const HERO_OVERLINE_TRANSITION = { duration: 0.5 };
+const HERO_HEADLINE_TRANSITION = {
+  duration: 0.8,
+  delay: 0.1,
+  ease: EASE_OUT_EXPO,
+};
+const HERO_UNDERLINE_TRANSITION = { duration: 0.6, delay: 0.9 };
+const HERO_SUBTEXT_TRANSITION = { duration: 0.5, delay: 0.7 };
 
 export default function Hero() {
   return (
@@ -33,18 +52,18 @@ export default function Hero() {
         {/* Left text column */}
         <div className="col-span-12 lg:col-span-7 border-r-0 lg:border-r-2 border-black px-4 md:px-8 lg:px-12 py-12 md:py-20 lg:py-24 relative">
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={FADE_UP_SM_HIDDEN}
+            animate={FADE_UP_SHOW}
+            transition={HERO_OVERLINE_TRANSITION}
             className="font-mono text-xs uppercase tracking-[0.3em] text-[#FF3B00] mb-8 md:mb-10"
           >
             [ 01 ] — Heavy Industrial Solutions
           </motion.p>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            initial={FADE_UP_LG_HIDDEN}
+            animate={FADE_UP_SHOW}
+            transition={HERO_HEADLINE_TRANSITION}
             className="font-display uppercase leading-[0.82] tracking-brutal text-[14vw] md:text-[10vw] lg:text-[8.5vw]"
           >
             Forged
@@ -54,18 +73,18 @@ export default function Hero() {
             <span className="relative inline-block">
               <span className="text-outline">Industry.</span>
               <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
+                initial={SCALE_X_HIDDEN}
+                animate={SCALE_X_SHOW}
+                transition={HERO_UNDERLINE_TRANSITION}
                 className="absolute -bottom-1 left-0 right-0 h-[0.18em] bg-[#FF3B00] origin-left"
               />
             </span>
           </motion.h1>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
+            initial={FADE_HIDDEN}
+            animate={FADE_SHOW}
+            transition={HERO_SUBTEXT_TRANSITION}
             className="mt-10 md:mt-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end"
           >
             <p className="md:col-span-7 text-base md:text-lg leading-relaxed text-[#4A4A4A] max-w-prose">

@@ -3,134 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --kew-bg: #ffffff;
-  --kew-bg-2: #f4f4f0;
-  --kew-fg: #0a0a0a;
-  --kew-muted: #4a4a4a;
-  --kew-accent: #ff3b00;
-  --kew-accent-2: #cc2f00;
-  --kew-line: rgba(10, 10, 10, 0.15);
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --background: #050505;
+  --foreground: #ffffff;
 }
 
 body {
-  font-family: var(--font-ibm-plex), -apple-system, system-ui, sans-serif;
-  color: #0a0a0a;
-  background: #ffffff;
+  color: var(--foreground);
+  background: var(--background);
+  overflow-x: hidden; /* Prevents horizontal scrolling issues */
 }
 
-.font-display {
-  font-family: var(--font-archivo-black), "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-  letter-spacing: -0.025em;
-}
-
-.font-mono {
-  font-family: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
-}
-
-.font-sans {
-  font-family: var(--font-ibm-plex), -apple-system, system-ui, sans-serif;
-}
-
-/* Outlined display text — used as decorative giant numerals */
-.text-outline {
-  -webkit-text-stroke: 2px #0a0a0a;
-  color: transparent;
-}
-.text-outline-thin {
-  -webkit-text-stroke: 1px #0a0a0a;
-  color: transparent;
-}
-.text-outline-white {
-  -webkit-text-stroke: 1.5px #ffffff;
-  color: transparent;
-}
-
-/* Blueprint grid background (subtle technical drawing aesthetic) */
-.bg-blueprint {
-  background-color: #f4f4f0;
-  background-image: linear-gradient(rgba(10, 10, 10, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 10, 10, 0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
-}
-
-/* Grain noise overlay */
-.bg-grain {
-  position: relative;
-}
-.bg-grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
-}
-
-/* Brutalist solid offset shadow utility */
-.shadow-brutal {
-  box-shadow: 6px 6px 0 0 #0a0a0a;
-}
-.shadow-brutal-sm {
-  box-shadow: 3px 3px 0 0 #0a0a0a;
-}
-.shadow-brutal-orange {
-  box-shadow: 6px 6px 0 0 #ff3b00;
-}
-.hover-brutal {
-  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
-}
-.hover-brutal:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0 0 #0a0a0a;
-}
-
-/* Hide native scrollbar (Lenis controls scroll) */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
-/* Focus ring — brutalist style: no rounded ring */
-*:focus-visible {
-  outline: 2px solid #ff3b00;
-  outline-offset: 2px;
-}
-
-/* Selection */
-::selection {
-  background: #ff3b00;
-  color: #ffffff;
-}
-
-/* Marquee — fallback if package fails */
-@keyframes marquee {
-  from { transform: translateX(0%); }
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
 }

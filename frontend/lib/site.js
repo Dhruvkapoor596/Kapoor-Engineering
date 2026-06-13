@@ -6,7 +6,7 @@ export const siteConfig = {
   description:
     "Expert industrial repair, heavy metal fabrication and iron goods supply since 2007 in Alwar, Rajasthan.",
   phone: "+91 9414846109",
-  phoneRaw: "+919414846109", // for tel: and wa.me links
+  phoneRaw: "+919414846109",
   email: "kapooreng149@gmail.com",
   address: {
     line1: "G-491, Near M.I.A. Police Station",
@@ -25,6 +25,5 @@ export const whatsappUrl = `https://wa.me/${siteConfig.phoneRaw.replace(
   "+",
   ""
 )}?text=${encodeURIComponent(siteConfig.whatsappMessage)}`;
-
 export const telUrl = `tel:${siteConfig.phoneRaw}`;
 export const mailUrl = `mailto:${siteConfig.email}`;

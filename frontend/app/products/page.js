@@ -1,166 +1,135 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-
-const catalog = [
-  {
-    code: "M/01",
-    title: "Roofing Sheets",
-    sub: "Profile & Plain",
-    desc: "Color-coated and galvanized sheets for industrial sheds, warehouses and factory roofing.",
-    specs: [
-      ["Material", "GI / GP / Color"],
-      ["Thickness", "0.30 – 0.80 mm"],
-      ["Length", "Cut-to-size"],
-      ["Finish", "Polyester / PVDF"],
-    ],
-    img: "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?crop=entropy&cs=srgb&fm=jpg&w=1200&q=85",
-  },
-  {
-    code: "M/02",
-    title: "MS Pipes & Tubes",
-    sub: "Square · Round · Rectangular",
-    desc: "Hollow sections for structural support, fabrication and load-bearing applications.",
-    specs: [
-      ["Section", "Sq / Rd / Rect"],
-      ["Thickness", "1.6 – 6.0 mm"],
-      ["Grade", "IS 1239 / IS 3589"],
-      ["Length", "6 – 12 m"],
-    ],
-    img: "/logos/ms-pipe-in-lucknow.jpg",
-  },
-  {
-    code: "M/03",
-    title: "Structural Steel",
-    sub: "Beams · Channels · Angles",
-    desc: "Heavy-duty I-beams, ISMC channels and angles for factory construction and frames.",
-    specs: [
-      ["Type", "ISMB / ISMC / Angle"],
-      ["Size", "75 – 600 mm"],
-      ["Grade", "E250 / Fe410"],
-      ["Length", "Cut on order"],
-    ],
-    img: "/logos/STRUCTURE-STEELBEAMS-CHANNELS-ANGLE-IPE.jpg",
-  },
-  {
-    code: "M/04",
-    title: "Industrial Hardware",
-    sub: "Consumables · Fasteners",
-    desc: "Welding rods, cutting wheels, nuts, bolts and fasteners — workshop-tested brands only.",
-    specs: [
-      ["Welding", "E6013 / E7018"],
-      ["Cutting", "4″ / 7″ wheels"],
-      ["Fasteners", "Hex / Allen / Stud"],
-      ["Brands", "Esab · Bosch · TVS"],
-    ],
-    img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?crop=entropy&cs=srgb&fm=jpg&w=1200&q=85",
-  },
-];
+import { ArrowRight } from "lucide-react";
+import { products } from "@/data/products";
 
 export default function ProductsPage() {
   return (
-    <div data-testid="products-page" className="bg-white">
-      {/* Page header */}
-      <header className="border-b-2 border-black bg-[#F4F4F0] bg-grain">
-        <div className="grid grid-cols-12 border-b border-black/15 font-mono text-[10px] uppercase tracking-[0.25em]">
-          <div className="col-span-6 md:col-span-3 border-r border-black/15 px-4 md:px-8 py-3">
-            Section / Catalog
+    <div data-testid="products-page" className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/3 bg-[#EAB308]/5 blur-[150px] pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Hero */}
+        <div className="mb-20">
+          <div className="inline-flex items-center space-x-2 mb-6 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#EAB308]"></span>
+            <span className="text-slate-300 text-[10px] font-bold tracking-[0.2em] uppercase">
+              Catalog · KEW/MAT
+            </span>
           </div>
-          <div className="hidden md:block col-span-6 px-8 py-3 text-[#4A4A4A]">
-            04 material categories · stocked & cut on request
-          </div>
-          <div className="col-span-6 md:col-span-3 px-4 md:px-8 py-3 text-right text-[#FF3B00]">
-            Rev. 2026
-          </div>
-        </div>
-        <div className="px-4 md:px-8 lg:px-12 py-12 md:py-20">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#FF3B00] mb-4">
-            [ Catalog ] · KEW/MAT
-          </p>
-          <h1 className="font-display uppercase tracking-brutal leading-[0.82] text-6xl md:text-8xl lg:text-[10rem]">
-            Raw
-            <br />
-            <span className="text-outline">Material.</span>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-none mb-6">
+            Raw <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EAB308] to-yellow-500">
+              Material.
+            </span>
           </h1>
+          <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
+            Four core categories — stocked, cut on request, and delivered
+            across the Alwar &ndash; Bhiwadi industrial belt.
+          </p>
         </div>
-      </header>
 
-      {/* Catalog rows */}
-      <div className="border-b-2 border-black">
-        {catalog.map((p, idx) => (
-          <motion.div
-            key={p.code}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.6 }}
-            data-testid={`catalog-row-${p.code}`}
-            className={`grid grid-cols-12 border-b border-black/15 last:border-b-0 ${
-              idx % 2 === 1 ? "lg:[&>.img]:order-2" : ""
-            }`}
-          >
-            {/* Image block */}
-            <div className="img col-span-12 lg:col-span-5 relative aspect-[4/3] lg:aspect-auto lg:min-h-[420px] bg-black border-b lg:border-b-0 lg:border-r border-black overflow-hidden group">
-              <Image
-                src={p.img}
-                alt={p.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
-              />
-              <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-white">
-                <span className="bg-[#FF3B00] px-2 py-1">{p.code}</span>
-                <span className="border border-white/40 px-2 py-1 backdrop-blur-sm">
-                  In Stock
-                </span>
-              </div>
-            </div>
-
-            {/* Text + specs */}
-            <div className="col-span-12 lg:col-span-7 px-4 md:px-8 lg:px-12 py-10 md:py-16 grid grid-cols-12 gap-6 md:gap-8">
-              <div className="col-span-12 md:col-span-7">
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#FF3B00] mb-3">
+        {/* Catalog rows */}
+        <div className="space-y-8 md:space-y-12">
+          {products.map((p, idx) => (
+            <article
+              key={p.id}
+              data-testid={`catalog-row-${p.id}`}
+              className="grid lg:grid-cols-12 gap-6 lg:gap-8 bg-[#0a0a0a] rounded-3xl border border-white/10 overflow-hidden hover:border-[#EAB308]/30 transition-colors"
+            >
+              {/* Image */}
+              <div
+                className={`lg:col-span-5 relative h-72 md:h-96 lg:h-auto lg:min-h-[440px] overflow-hidden ${
+                  idx % 2 === 1 ? "lg:order-2" : ""
+                }`}
+              >
+                <Image
+                  src={p.image}
+                  alt={p.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  className="object-cover opacity-60 hover:opacity-100 hover:scale-105 transition-all duration-700"
+                />
+                <div className="absolute top-4 left-4 bg-[#EAB308] text-black text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full">
                   {p.sub}
-                </p>
-                <h2 className="font-display uppercase tracking-brutal leading-[0.9] text-4xl md:text-5xl lg:text-6xl mb-6">
-                  {p.title}
-                </h2>
-                <p className="text-base md:text-lg leading-relaxed text-[#4A4A4A] max-w-prose mb-8">
-                  {p.desc}
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-3 bg-black text-white border-2 border-black px-5 py-3 font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#FF3B00] transition-colors"
-                  data-testid={`catalog-quote-${p.code}`}
-                >
-                  Request Quote <span className="text-base">→</span>
-                </Link>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full">
+                  In Stock
+                </div>
               </div>
 
-              {/* Spec table */}
-              <div className="col-span-12 md:col-span-5">
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#4A4A4A] mb-3">
-                  Spec Sheet
-                </p>
-                <table className="w-full border-2 border-black font-mono text-xs">
-                  <tbody>
-                    {p.specs.map(([k, v]) => (
-                      <tr key={k} className="border-b border-black/15 last:border-b-0">
-                        <td className="px-3 py-2.5 uppercase tracking-[0.15em] text-[#4A4A4A] border-r border-black/15 w-[45%]">
-                          {k}
-                        </td>
-                        <td className="px-3 py-2.5 text-black font-bold normal-case text-sm tracking-normal font-sans">
-                          {v}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              {/* Content */}
+              <div className="lg:col-span-7 p-6 md:p-10 lg:p-12 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-4">
+                    {p.title}
+                  </h2>
+                  <p className="text-slate-400 text-base md:text-lg leading-relaxed font-light max-w-prose mb-8">
+                    {p.description}
+                  </p>
+
+                  {/* Spec table */}
+                  <div className="bg-[#050505] border border-white/10 rounded-2xl overflow-hidden">
+                    <div className="px-5 py-3 border-b border-white/10 flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase">
+                        Spec Sheet
+                      </span>
+                      <span className="text-[10px] font-bold text-[#EAB308] tracking-[0.2em] uppercase">
+                        Cut on order
+                      </span>
+                    </div>
+                    <table className="w-full">
+                      <tbody>
+                        {p.specs.map(([k, v]) => (
+                          <tr
+                            key={k}
+                            className="border-b border-white/5 last:border-b-0"
+                          >
+                            <td className="px-5 py-3 text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase w-[45%]">
+                              {k}
+                            </td>
+                            <td className="px-5 py-3 text-sm text-white font-light">
+                              {v}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <Link
+                    href="/contact"
+                    data-testid={`catalog-quote-${p.id}`}
+                    className="inline-flex items-center bg-[#EAB308] text-black text-xs font-bold px-6 py-3.5 rounded-full hover:scale-105 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] transition-all uppercase tracking-widest"
+                  >
+                    Request Quote <ArrowRight className="ml-3 w-4 h-4" />
+                  </Link>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </article>
+          ))}
+        </div>
+
+        {/* CTA at bottom */}
+        <div className="mt-20 bg-[#0a0a0a] border border-white/10 rounded-3xl p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div>
+            <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight mb-2">
+              Need a custom spec?
+            </h3>
+            <p className="text-slate-400 font-light">
+              We cut and supply to drawings — share your requirements.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="inline-flex items-center bg-white text-black text-xs font-bold px-8 py-4 rounded-full hover:bg-[#EAB308] transition-colors uppercase tracking-widest"
+          >
+            Submit Drawings <ArrowRight className="ml-3 w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );

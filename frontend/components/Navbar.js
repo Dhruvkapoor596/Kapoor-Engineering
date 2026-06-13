@@ -1,26 +1,31 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { telUrl } from "@/lib/site";
 
-const NAV_LINKS = [
-  { label: "Index", href: "/", num: "01" },
-  { label: "Catalog", href: "/products", num: "02" },
-  { label: "Capabilities", href: "/services", num: "03" },
-  { label: "Works", href: "/projects", num: "04" },
-  { label: "Studio", href: "/about", num: "05" },
+const NAV_SCROLL_THRESHOLD_PX = 20;
+const DESKTOP_NAV_LINKS = ["Home", "Products", "Services", "Projects", "About"];
+const MOBILE_NAV_LINKS = [
+  "Home",
+  "Products",
+  "Services",
+  "Projects",
+  "About",
+  "Contact",
 ];
-const NAV_SCROLL_SHADOW_THRESHOLD_PX = 4;
+
+const toHref = (item) =>
+  item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`;
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > NAV_SCROLL_SHADOW_THRESHOLD_PX);
+    setScrolled(window.scrollY > NAV_SCROLL_THRESHOLD_PX);
   }, []);
 
   useEffect(() => {
@@ -28,122 +33,122 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Auto-close mobile menu when route changes. Using the render-phase
-  // "derive-state-on-prop-change" pattern (instead of useEffect) keeps this
-  // compatible with React 19's react-hooks/set-state-in-effect rule.
+  // Auto-close mobile menu on route change (render-phase pattern for React 19)
   const [lastPathname, setLastPathname] = useState(pathname);
   if (lastPathname !== pathname) {
     setLastPathname(pathname);
-    setOpen(false);
+    setIsOpen(false);
   }
 
   return (
-    <header
+    <nav
       data-testid="main-navbar"
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-black transition-shadow ${
-        scrolled ? "shadow-[0_4px_0_0_#0a0a0a]" : ""
+      className={`fixed w-full z-50 transition-all duration-500 top-0 pt-4 px-4 ${
+        scrolled ? "py-2" : "py-4"
       }`}
     >
-      <div className="grid grid-cols-12 items-stretch">
-        {/* Logo cell */}
-        <Link
-          href="/"
-          data-testid="navbar-logo"
-          className="col-span-8 md:col-span-3 border-r-2 border-black px-4 md:px-6 py-4 md:py-5 flex items-center gap-3 group"
-        >
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-white flex items-center justify-center font-display text-xl leading-none group-hover:bg-[#FF3B00] transition-colors">
-            K
+      <div
+        className={`max-w-7xl mx-auto transition-all duration-500 rounded-2xl ${
+          scrolled
+            ? "bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 shadow-2xl"
+            : "bg-transparent border-transparent"
+        }`}
+      >
+        <div className="flex justify-between items-center px-6 h-20">
+          <div className="flex-shrink-0">
+            <Link
+              href="/"
+              data-testid="navbar-logo"
+              className="flex items-center space-x-4"
+            >
+              <Image
+                src="/logos/Kew-Logo-6.png"
+                alt="KEW Logo"
+                width={48}
+                height={48}
+                priority
+                className="object-contain"
+              />
+              <div className="hidden sm:block">
+                <span className="block text-xl font-roboto-slab font-black text-white tracking-widest">
+                  KAPOOR
+                </span>
+                <span className="block text-[9px] font-medium text-[#EAB308] tracking-[0.3em] uppercase">
+                  Engineering Works
+                </span>
+              </div>
+            </Link>
           </div>
-          <div className="leading-none">
-            <div className="font-display text-base md:text-lg tracking-brutal uppercase">
-              Kapoor / Eng. Works
-            </div>
-            <div className="font-mono text-[9px] md:text-[10px] tracking-[0.25em] uppercase text-[#4A4A4A] mt-1">
-              Est. 2007 · Alwar, IN
-            </div>
+
+          <div className="hidden md:flex items-center space-x-10">
+            {DESKTOP_NAV_LINKS.map((item) => {
+              const href = toHref(item);
+              const isActive = pathname === href;
+              return (
+                <Link
+                  key={item}
+                  href={href}
+                  data-testid={`nav-link-${item.toLowerCase()}`}
+                  className={`text-xs font-semibold transition-all uppercase tracking-[0.15em] pb-1 border-b-2 ${
+                    isActive
+                      ? "text-[#EAB308] border-[#EAB308]"
+                      : "text-slate-300 border-transparent hover:text-white hover:border-white/30"
+                  }`}
+                >
+                  {item}
+                </Link>
+              );
+            })}
           </div>
-        </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex col-span-7 border-r-2 border-black">
-          {NAV_LINKS.map((l) => {
-            const active = pathname === l.href;
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                data-testid={`nav-link-${l.label.toLowerCase()}`}
-                className={`flex-1 border-r border-black/15 last:border-r-0 px-3 lg:px-5 py-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] transition-colors ${
-                  active
-                    ? "bg-black text-white"
-                    : "text-black hover:bg-[#FF3B00] hover:text-white"
-                }`}
-              >
-                <span className="opacity-50 text-[9px]">{l.num}</span>
-                <span className="font-bold">{l.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* CTA cell */}
-        <Link
-          href="/contact"
-          data-testid="navbar-contact-cta"
-          className="hidden md:flex col-span-2 items-center justify-between px-4 lg:px-6 bg-[#FF3B00] text-white hover:bg-black transition-colors font-mono text-[11px] uppercase tracking-[0.18em] font-bold group"
-        >
-          <span>Get Quote</span>
-          <span className="text-base">→</span>
-        </Link>
-
-        {/* Mobile menu toggle */}
-        <button
-          onClick={() => setOpen((s) => !s)}
-          aria-label="Toggle menu"
-          data-testid="mobile-menu-toggle"
-          className="md:hidden col-span-4 border-l-2 border-black bg-black text-white flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] font-bold"
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-          {open ? "Close" : "Menu"}
-        </button>
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/contact"
+              data-testid="navbar-contact-cta"
+              className="hidden md:flex items-center justify-center bg-white text-black text-xs font-bold px-6 py-3 rounded-full hover:bg-[#EAB308] hover:text-black transition-colors uppercase tracking-widest"
+            >
+              Contact Us
+            </Link>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              data-testid="mobile-menu-toggle"
+              aria-label="Toggle menu"
+              className="md:hidden text-white p-2"
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Mobile menu drawer */}
-      {open && (
+      {isOpen && (
         <div
           data-testid="mobile-menu"
-          className="md:hidden border-t-2 border-black bg-white"
+          className="md:hidden absolute top-24 left-4 right-4 bg-[#0a0a0a] border border-white/10 rounded-2xl backdrop-blur-xl p-6 shadow-2xl"
         >
-          {[...NAV_LINKS, { label: "Get Quote", href: "/contact", num: "06" }].map(
-            (l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                data-testid={`mobile-nav-link-${l.label.toLowerCase().replace(/\s/g, "-")}`}
-                className={`flex items-baseline gap-4 px-5 py-5 border-b border-black/15 font-display text-2xl uppercase ${
-                  pathname === l.href
-                    ? "bg-black text-white"
-                    : "hover:bg-[#FF3B00] hover:text-white"
-                }`}
-              >
-                <span className="font-mono text-[10px] opacity-60 tracking-[0.2em]">
-                  {l.num}
-                </span>
-                <span>{l.label}</span>
-              </Link>
-            )
-          )}
-          <a
-            href={telUrl}
-            data-testid="mobile-call-link"
-            className="flex items-center justify-between px-5 py-5 bg-[#F4F4F0] font-mono text-xs uppercase tracking-[0.2em] font-bold"
-          >
-            <span>Call Direct</span>
-            <span>+91 941 484 6109</span>
-          </a>
+          <div className="space-y-6">
+            {MOBILE_NAV_LINKS.map((item) => {
+              const href = toHref(item);
+              const isActive = pathname === href;
+              return (
+                <Link
+                  key={item}
+                  href={href}
+                  onClick={() => setIsOpen(false)}
+                  data-testid={`mobile-nav-link-${item.toLowerCase()}`}
+                  className={`block text-sm font-bold uppercase tracking-widest ${
+                    isActive
+                      ? "text-[#EAB308]"
+                      : "text-white hover:text-[#EAB308]"
+                  }`}
+                >
+                  {item}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 }

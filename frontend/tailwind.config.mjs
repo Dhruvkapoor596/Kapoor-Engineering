@@ -8,30 +8,23 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-archivo-black)", "Helvetica Neue", "sans-serif"],
-        sans: ["var(--font-ibm-plex)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
+        oswald: ['var(--font-oswald)', 'sans-serif'],
+        roboto: ['var(--font-roboto)', 'sans-serif'],
+        // Add the new font here:
+        'roboto-slab': ['var(--font-roboto-slab)', 'serif'], 
       },
       colors: {
-        kew: {
-          bg: "#FFFFFF",
-          paper: "#F4F4F0",
-          ink: "#0A0A0A",
-          muted: "#4A4A4A",
-          line: "rgba(10,10,10,0.15)",
-          gray: "#E5E5E5",
+        industrial: {
+          950: '#020617', 
+          900: '#0f172a', 
+          800: '#1e293b', 
+          100: '#e2e8f0', 
         },
-        safety: {
-          DEFAULT: "#FF3B00",
-          hover: "#CC2F00",
-        },
-      },
-      borderRadius: {
-        none: "0px",
-      },
-      letterSpacing: {
-        brutal: "-0.04em",
-      },
+        accent: {
+          DEFAULT: '#EAB308', 
+          hover:   '#CA8A04', 
+        }
+      }
     },
   },
   plugins: [],

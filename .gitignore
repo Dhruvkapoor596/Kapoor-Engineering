@@ -1,8 +1,26 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# =========================
+# 🔐 SECRETS — MUST NEVER COMMIT
+# =========================
+.env
+.env.*
+*.env
+!.env.example
+!.env.sample
+credentials.json
+*.key
+*.pem
+.credentials
+*token.json*
+*credentials.json*
+
 # IDE and editors
 .idea/
 .vscode/
+*.swp
+*.swo
+*~
 
 # Dependencies
 node_modules/
@@ -16,8 +34,14 @@ node_modules/
 !.yarn/releases
 !.yarn/versions
 
+# Lock files (keep yarn.lock only — avoid conflicts)
+package-lock.json
+pnpm-lock.yaml
+
 # Testing
 /coverage
+/.nyc_output
+.pytest_cache/
 
 # Next.js
 /.next/
@@ -28,14 +52,9 @@ next-env.d.ts
 # Production builds
 /build
 dist/
-dist
-
-# Environment files (comprehensive coverage)
-
-*token.json*
-*credentials.json*
 
 # Logs and debug files
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -44,25 +63,25 @@ dump.rdb
 
 # System files
 .DS_Store
-*.pem
+Thumbs.db
+desktop.ini
 
 # Python
 __pycache__/
+*.py[cod]
 *pyc*
 venv/
 .venv/
+*.egg-info/
 
 # Development tools
 chainlit.md
 .chainlit
 .ipynb_checkpoints/
-.ac
 
 # Deployment
 .vercel
-
-# Data and databases
-agenthub/agents/youtube/db
+.turbo/
 
 # Archive files and large assets
 **/*.zip
@@ -76,18 +95,15 @@ agenthub/agents/youtube/db
 # Build caches
 .cache/
 
+# =========================
+# EMERGENT-INTERNAL (don't push to GitHub)
+# =========================
+/memory/
 memory/test_credentials.md
-
-# Mobile development
-android-sdk/frontend/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
+/test_reports/
+test_result.md
+/.emergent/
+.emergent/
+frontend_old_react_backup/
 frontend/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
-frontend/node_modules/@next/swc-linux-arm64-musl/next-swc.linux-arm64-musl.node
 frontend/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
-frontend/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
-frontend/node_modules/@next/swc-linux-arm64-gnu/next-swc.linux-arm64-gnu.node
-.env
-.env.*
-*.env
-credentials.json
-*.key
-.credentials

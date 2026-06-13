@@ -1,0 +1,25 @@
+# Backend env — DO NOT COMMIT
+.env
+.env.local
+.env.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+*.egg-info/
+
+# Test artifacts
+htmlcov/
+.coverage
+.coverage.*
+
+# Editor
+.vscode/
+.idea/
+.DS_Store

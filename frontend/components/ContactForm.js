@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { MapPin, Phone, Mail, Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { siteConfig, telUrl, mailUrl, whatsappUrl } from "@/lib/site";
+import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { siteConfig, telUrl, whatsappUrl } from "@/lib/site";
 
 const services = [
   "Machinery Repair",
@@ -10,6 +10,8 @@ const services = [
   "Structural Welding",
   "Other Inquiry",
 ];
+
+const API = process.env.NEXT_PUBLIC_BACKEND_URL || "";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -20,12 +22,15 @@ export default function ContactForm() {
     service: services[0],
     message: "",
     consent: false,
+    website: "", // honeypot — must remain empty
   });
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle"); // idle | submitting | success
+  const [status, setStatus] = useState("idle"); // idle | submitting | success | error
+  const [serverError, setServerError] = useState("");
 
   const update = (key) => (e) => {
-    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setForm((f) => ({ ...f, [key]: value }));
     if (errors[key]) setErrors((er) => ({ ...er, [key]: undefined }));
   };
@@ -35,7 +40,10 @@ export default function ContactForm() {
     if (!form.name.trim()) err.name = "Please enter your name.";
     if (!form.email.trim() && !form.phone.trim())
       err.email = "Please provide either an email or phone number.";
-    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+    if (
+      form.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    )
       err.email = "Please enter a valid email address.";
     if (!form.message.trim() || form.message.trim().length < 10)
       err.message = "Please share at least 10 characters describing your need.";
@@ -44,30 +52,59 @@ export default function ContactForm() {
     return Object.keys(err).length === 0;
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    setServerError("");
     if (!validate()) return;
     setStatus("submitting");
 
-    // Frontend-only handler: open user's email client with a pre-filled message.
-    // (Backend integration can be added later without changing the UI.)
-    const subject = `New Enquiry from ${form.name} — ${form.service}`;
-    const body =
-      `Name: ${form.name}\n` +
-      `Company: ${form.company || "—"}\n` +
-      `Email: ${form.email || "—"}\n` +
-      `Phone: ${form.phone || "—"}\n` +
-      `Service: ${form.service}\n\n` +
-      `Message:\n${form.message}`;
-    const mailto = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    try {
+      const res = await fetch(`${API}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          company: form.company.trim(),
+          email: form.email.trim() || null,
+          phone: form.phone.trim(),
+          service: form.service,
+          message: form.message.trim(),
+          website: form.website, // honeypot
+        }),
+      });
 
-    // Give a tiny delay so user sees the transition
-    setTimeout(() => {
-      window.location.href = mailto;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const detail =
+          data?.detail ||
+          "Something went wrong sending your enquiry. Please try calling or WhatsApp.";
+        setServerError(detail);
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
-    }, 400);
+    } catch (err) {
+      setServerError(
+        "We couldn't reach our server. Please call or WhatsApp us directly."
+      );
+      setStatus("error");
+    }
+  };
+
+  const reset = () => {
+    setForm({
+      name: "",
+      company: "",
+      email: "",
+      phone: "",
+      service: services[0],
+      message: "",
+      consent: false,
+      website: "",
+    });
+    setServerError("");
+    setStatus("idle");
   };
 
   if (status === "success") {
@@ -83,8 +120,8 @@ export default function ContactForm() {
           Thank you, {form.name.split(" ")[0]}!
         </h3>
         <p className="text-slate-400 font-light max-w-md mx-auto mb-8">
-          Your email client should now be open with your enquiry ready to send.
-          If it didn&apos;t open, please reach us directly via the options below.
+          Your enquiry has been delivered to our team. We typically respond
+          within one business day.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
@@ -102,18 +139,7 @@ export default function ContactForm() {
             WhatsApp Us
           </a>
           <button
-            onClick={() => {
-              setForm({
-                name: "",
-                company: "",
-                email: "",
-                phone: "",
-                service: services[0],
-                message: "",
-                consent: false,
-              });
-              setStatus("idle");
-            }}
+            onClick={reset}
             className="text-slate-300 text-xs font-bold px-6 py-3 rounded-full uppercase tracking-widest border border-white/15 hover:border-white/40 transition-colors"
             data-testid="contact-send-another"
           >
@@ -131,6 +157,23 @@ export default function ContactForm() {
       className="space-y-7"
       data-testid="contact-form"
     >
+      {/* Honeypot — visually hidden, must stay empty */}
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden"
+      >
+        <label>
+          Website
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={form.website}
+            onChange={update("website")}
+          />
+        </label>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-6">
         <Field
           id="full-name"
@@ -202,7 +245,9 @@ export default function ContactForm() {
           onChange={update("message")}
           data-testid="contact-input-message"
           className={`w-full bg-[#050505] border rounded-xl text-white px-6 py-4 focus:outline-none transition-colors font-light resize-none ${
-            errors.message ? "border-red-500/60" : "border-white/10 focus:border-[#EAB308]"
+            errors.message
+              ? "border-red-500/60"
+              : "border-white/10 focus:border-[#EAB308]"
           }`}
           placeholder="Describe the issue, materials needed, quantities, or service request..."
         />
@@ -225,6 +270,16 @@ export default function ContactForm() {
         {errors.consent && <ErrorLine text={errors.consent} />}
       </div>
 
+      {status === "error" && serverError && (
+        <div
+          data-testid="contact-server-error"
+          className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-light p-4 rounded-xl"
+        >
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span>{serverError}</span>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-2 gap-6">
         <p className="text-slate-500 text-xs font-light">
           We typically respond within one business day.
@@ -243,7 +298,17 @@ export default function ContactForm() {
   );
 }
 
-function Field({ id, label, required, error, type = "text", value, onChange, placeholder, testId }) {
+function Field({
+  id,
+  label,
+  required,
+  error,
+  type = "text",
+  value,
+  onChange,
+  placeholder,
+  testId,
+}) {
   return (
     <div>
       <label
@@ -276,5 +341,3 @@ function ErrorLine({ text }) {
     </p>
   );
 }
-
-export { ContactForm };

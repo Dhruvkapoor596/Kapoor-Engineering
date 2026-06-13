@@ -1,0 +1,51 @@
+{
+  "summary": "Iteration 2 — Backend (FastAPI /api/contact + Resend) and frontend integration tested end-to-end against the public URL. 8/8 backend pytest tests pass, all 16 frontend flows pass. Resend is intentionally unconfigured (RESEND_API_KEY empty); the 503 fallback is correctly surfaced in the UI as expected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Products page",
+        "issues": [
+          "Product cards have no per-card data-testid (e.g. product-card-roofing/pipes/steel/hardware). Not blocking; content + images verified by text and naturalWidth>0. Consider adding for future regression testing."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_contact_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Required, user action) Add RESEND_API_KEY to /app/backend/.env once the user provides it; the 503 path will then become a 200 + email send.",
+    "(Optional polish) Add data-testid='product-card-{slug}' to each card in /app/frontend/components/Products.js for stronger regression selectors.",
+    "(Optional, from iter 1 — still open) Add 'sizes' prop to next/image components using 'fill' and 'data-scroll-behavior=smooth' on <html> to silence Next.js 16 warnings."
+  ],
+  "critical_code_review_comments": [
+    "Rate-limiter in backend/server.py is in-memory (per-process dict). It will reset on every backend restart and won't work across multiple workers/pods. For a low-traffic site this is acceptable, but document this so it isn't mistaken for a security control.",
+    "Rate-limit key is request.client.host which behind Kubernetes ingress is the ingress IP, not the real client IP. All visitors share one bucket. Consider trusting X-Forwarded-For (carefully) so legitimate users aren't penalised by spammers from the same gateway IP.",
+    "ContactEnquiry.phone validator only checks format if a phone is provided, but the 'must have email OR phone' rule lives inside the route handler. Consider moving it into a model-level @model_validator so OpenAPI schema documents it (currently the 400 is invisible to API consumers).",
+    "submit_contact uses asyncio.to_thread(resend.Emails.send, params) which is correct since the SDK is sync. Good.",
+    "MongoDB archival of enquiries does not include the timestamp as a real datetime — it stores an ISO string. Inconsistent with status_checks model. Minor.",
+    "Frontend ContactForm.js correctly handles 4xx/5xx by reading detail; on network failure it shows a generic message. data-testid='contact-server-error' present and observed populated with backend's exact detail string. Re-submit clears prior error before re-attempting. Good.",
+    "CORS allow_credentials=True with allow_origins='*' is technically invalid per the CORS spec (browsers reject credentialed requests with wildcard origin). The current frontend does not send credentials so it works, but tighten this once the production origin is known."
+  ],
+  "updated_files": [
+    "/app/backend/tests/__init__.py (new)",
+    "/app/backend/tests/test_contact_api.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100% (8/8 pytest)",
+    "frontend": "100% (16/16 flows)"
+  },
+  "test_credentials": "N/A — no auth.",
+  "seed_data_creation": "None. Test enquiries are dropped at the rate-limit/503 stage so no MongoDB rows are written.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend public URL: https://kapoor-portfolio-2.preview.emergentagent.com. /api/health returns resend_configured=false until RESEND_API_KEY is set. POST /api/contact ordering: (1) honeypot 'website' field -> 200 silent, (2) missing both email & phone -> 400, (3) rate limit (5/hour per request.client.host) -> 429, (4) RESEND_API_KEY missing -> 503. Pydantic 422 for invalid name<2chars, message<10chars, malformed EmailStr. Frontend Contact form posts to ${NEXT_PUBLIC_BACKEND_URL}/api/contact and renders backend's `detail` text inside [data-testid='contact-server-error']. The submit button uses status==='submitting' for disabling; after an error it re-enables (disabled attribute absent). Re-submit clears previous error. Rate-limit bucket persists across requests within the same backend process — if you re-run backend tests you may want to `sudo supervisorctl restart backend` first to reset the bucket. The pytest suite uses 8 retries to absorb whichever 429 slot triggers.",
+  "rca_of_the_issue": "No bugs. Two minor surprises during testing: (a) f-string with embedded escaped double-quotes is rejected by Python 3.12 — adjusted playwright scripts to use pre-computed variables. (b) Rate-limit bucket carries over between backend tests and the subsequent frontend smoke (so we restarted backend between phases to keep the 503 path observable). The contact form intentionally surfaces the 503 detail message; this is the expected UX until the user provides RESEND_API_KEY."
+}

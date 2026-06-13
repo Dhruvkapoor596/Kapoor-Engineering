@@ -65,6 +65,7 @@ export default function About() {
               src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80"
               alt="Heavy Duty Welding"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover opacity-50 group-hover:scale-105 group-hover:opacity-70 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent"></div>

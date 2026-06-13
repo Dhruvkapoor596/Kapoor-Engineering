@@ -51,6 +51,7 @@ export default function About() {
                 src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&q=80" 
                 alt="Factory Floor" 
                 fill 
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover opacity-50 group-hover:scale-105 group-hover:opacity-70 transition-all duration-700" 
               />
               {/* Dark vignette to blend with background */}

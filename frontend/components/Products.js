@@ -24,7 +24,7 @@ export default function Products() {
             <div key={product.id} className="group relative bg-[#0a0a0a] rounded-3xl border border-white/10 overflow-hidden hover:border-[#EAB308]/50 hover:bg-white/[0.02] transition-all duration-500 flex flex-col h-full">
               <div className="relative h-80 w-full overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10" />
-                <Image src={product.image} alt={product.title} fill className={`object-cover transition-transform duration-700 ${product.inStock ? 'group-hover:scale-105 opacity-60 group-hover:opacity-100' : 'grayscale opacity-30'}`} />
+                <Image src={product.image} alt={product.title} fill sizes="(max-width: 768px) 100vw, 50vw" className={`object-cover transition-transform duration-700 ${product.inStock ? 'group-hover:scale-105 opacity-60 group-hover:opacity-100' : 'grayscale opacity-30'}`} />
               </div>
 
               <div className="p-8 flex-grow flex flex-col justify-between relative z-20 -mt-10">

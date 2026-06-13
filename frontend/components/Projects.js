@@ -20,7 +20,7 @@ export default function Projects() {
           {projects.map((project) => (
             <div key={project.id} className="group cursor-pointer">
               <div className="relative h-80 rounded-3xl overflow-hidden mb-6 bg-[#0a0a0a] border border-white/10">
-                <Image src={project.image} alt={project.title} fill className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                 <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                   <ArrowUpRight className="text-white w-5 h-5" />
                 </div>

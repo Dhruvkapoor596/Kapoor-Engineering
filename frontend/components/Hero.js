@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#050505] text-white overflow-hidden pt-20">
       <div className="absolute inset-0 z-0">
-        <Image src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80" alt="Precision Engineering" fill className="w-full h-full object-cover opacity-30" />
+        <Image src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80" alt="Precision Engineering" fill sizes="100vw" className="w-full h-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
       </div>
 

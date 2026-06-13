@@ -57,7 +57,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body
         className={`${oswald.variable} ${roboto.variable} ${robotoSlab.variable} antialiased font-roboto bg-[#050505] text-white`}
       >

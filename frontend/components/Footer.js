@@ -1,136 +1,148 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Phone, Mail, MapPin } from "lucide-react";
-import { siteConfig, telUrl, mailUrl } from "@/lib/site";
+import { siteConfig, telUrl, mailUrl, whatsappUrl } from "@/lib/site";
 
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
     <footer
-      className="bg-[#050505] border-t border-white/5 pt-24 pb-8 relative overflow-hidden"
       data-testid="main-footer"
+      className="bg-black text-white border-t-2 border-black"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-16 mb-24">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Link href="/" className="inline-block mb-6">
-              <Image
-                src="/logos/Kew-Logo-6.png"
-                alt={`${siteConfig.name} Logo`}
-                width={60}
-                height={60}
-                className="object-contain"
-              />
-            </Link>
-            <p className="text-slate-400 text-sm font-light leading-relaxed">
-              {siteConfig.description}
-            </p>
-          </div>
+      {/* Top: massive type + columns */}
+      <div className="grid grid-cols-12 border-b border-white/15">
+        <div className="col-span-12 lg:col-span-7 border-r border-white/15 p-6 md:p-10 lg:p-14">
+          <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#FF3B00] mb-6">
+            [ Workshop / Alwar ]
+          </p>
+          <h2 className="font-display text-7xl md:text-[10rem] lg:text-[14rem] leading-[0.85] tracking-brutal uppercase">
+            Let&apos;s
+            <br />
+            Build.
+          </h2>
+          <Link
+            href="/contact"
+            data-testid="footer-cta-contact"
+            className="mt-10 inline-flex items-center gap-3 bg-[#FF3B00] text-white border-2 border-white px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-colors"
+          >
+            Start a Project
+            <span className="text-base">→</span>
+          </Link>
+        </div>
 
-          {/* Menu */}
-          <div>
-            <h4 className="text-white text-[10px] font-bold tracking-[0.2em] uppercase mb-6">
-              Menu
+        <div className="col-span-12 lg:col-span-5 grid grid-cols-2">
+          <div className="border-r border-white/15 p-6 md:p-10">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#FF3B00] mb-6">
+              Index
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.18em]">
               {[
-                { label: "Products", href: "/products" },
-                { label: "Services", href: "/services" },
-                { label: "Projects", href: "/projects" },
-                { label: "About", href: "/about" },
-                { label: "Contact", href: "/contact" },
-              ].map((item) => (
-                <li key={item.label}>
+                ["Catalog", "/products"],
+                ["Capabilities", "/services"],
+                ["Works", "/projects"],
+                ["Studio", "/about"],
+                ["Contact", "/contact"],
+              ].map(([label, href]) => (
+                <li key={href}>
                   <Link
-                    href={item.href}
-                    className="text-slate-400 hover:text-[#EAB308] text-sm font-light transition-colors"
+                    href={href}
+                    className="hover:text-[#FF3B00] transition-colors"
                   >
-                    {item.label}
+                    {label}
+                    <span className="ml-2 opacity-30">↗</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Top Categories */}
-          <div>
-            <h4 className="text-white text-[10px] font-bold tracking-[0.2em] uppercase mb-6">
-              Top Categories
+          <div className="p-6 md:p-10">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#FF3B00] mb-6">
+              Hail
             </h4>
-            <ul className="space-y-4">
-              {[
-                "Roofing Sheets",
-                "Structural Steel",
-                "MS Pipes",
-                "Industrial Hardware",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    href="/products"
-                    className="text-slate-400 hover:text-[#EAB308] text-sm font-light transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Reach Us */}
-          <div>
-            <h4 className="text-white text-[10px] font-bold tracking-[0.2em] uppercase mb-6">
-              Reach Us
-            </h4>
-            <ul className="space-y-4 text-sm font-light">
-              <li className="flex items-start gap-3 text-slate-400">
-                <MapPin className="w-4 h-4 text-[#EAB308] mt-1 flex-shrink-0" />
-                <span>
-                  {siteConfig.address.line1}, {siteConfig.address.line2},{" "}
-                  {siteConfig.address.city}, {siteConfig.address.state}
-                </span>
-              </li>
+            <ul className="space-y-4 font-mono text-xs">
               <li>
                 <a
                   href={telUrl}
-                  className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors"
-                  data-testid="footer-phone-link"
+                  data-testid="footer-phone"
+                  className="block hover:text-[#FF3B00] transition-colors"
                 >
-                  <Phone className="w-4 h-4 text-[#EAB308]" />
-                  {siteConfig.phone}
+                  <span className="uppercase tracking-[0.18em] opacity-50 block mb-1">
+                    Telephone
+                  </span>
+                  <span className="font-display normal-case text-lg tracking-normal">
+                    {siteConfig.phone}
+                  </span>
                 </a>
               </li>
               <li>
                 <a
                   href={mailUrl}
-                  className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors break-all"
-                  data-testid="footer-email-link"
+                  data-testid="footer-email"
+                  className="block hover:text-[#FF3B00] transition-colors break-all"
                 >
-                  <Mail className="w-4 h-4 text-[#EAB308] flex-shrink-0" />
-                  {siteConfig.email}
+                  <span className="uppercase tracking-[0.18em] opacity-50 block mb-1">
+                    Despatch
+                  </span>
+                  <span className="font-sans normal-case text-sm">
+                    {siteConfig.email}
+                  </span>
                 </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="footer-whatsapp"
+                  className="block hover:text-[#FF3B00] transition-colors"
+                >
+                  <span className="uppercase tracking-[0.18em] opacity-50 block mb-1">
+                    Signal
+                  </span>
+                  <span className="font-sans normal-case text-sm">
+                    WhatsApp Direct
+                  </span>
+                </a>
+              </li>
+              <li>
+                <div>
+                  <span className="uppercase tracking-[0.18em] opacity-50 block mb-1">
+                    Site
+                  </span>
+                  <span className="font-sans normal-case text-sm">
+                    {siteConfig.address.line1}, {siteConfig.address.line2},{" "}
+                    {siteConfig.address.city}
+                  </span>
+                </div>
               </li>
             </ul>
           </div>
         </div>
+      </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/10 pt-8 gap-4">
-          <p className="text-slate-500 text-xs font-light text-center md:text-left">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights
-            reserved.
-          </p>
-          <p className="text-slate-600 text-xs font-light tracking-wider uppercase">
-            Crafted with precision in Alwar, Rajasthan
-          </p>
+      {/* Giant brand mark */}
+      <div className="relative overflow-hidden border-b border-white/15">
+        <div className="px-4 md:px-8 py-8 md:py-12">
+          <h1 className="font-display text-[28vw] md:text-[24vw] leading-[0.78] tracking-brutal uppercase select-none -mb-[5vw]">
+            <span>KEW</span>
+            <sup className="font-mono text-[3vw] md:text-[1.6vw] text-[#FF3B00] align-top tracking-[0.2em] ml-2">
+              ®
+            </sup>
+          </h1>
         </div>
       </div>
 
-      <div
-        aria-hidden="true"
-        className="absolute bottom-[-5%] left-0 w-full text-center pointer-events-none select-none opacity-[0.03]"
-      >
-        <h1 className="text-[15vw] font-black text-white tracking-tighter leading-none">
-          KAPOOR
-        </h1>
+      {/* Meta row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 text-[10px] md:text-xs font-mono uppercase tracking-[0.2em]">
+        <div className="border-r border-white/15 px-4 md:px-8 py-5">
+          © {year} {siteConfig.name}
+        </div>
+        <div className="border-r border-white/15 px-4 md:px-8 py-5 md:text-center">
+          Forged in Rajasthan
+        </div>
+        <div className="px-4 md:px-8 py-5 md:text-right">
+          v.2026 · System Online
+        </div>
       </div>
     </footer>
   );

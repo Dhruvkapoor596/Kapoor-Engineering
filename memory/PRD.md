@@ -1,82 +1,49 @@
-# Kapoor Engineering Works — PRD
+# Kapoor Engineering Works — V3 Design
 
-## Original Problem Statement
-> https://github.com/Dhruvkapoor596/Kapoor-Engineering
->
-> Here is the link to my half completed website work — kindly refine it as much as you can without changing the looks of the website. Just add important features, remove unnecessary files and codes, and give me a fully functional website code right now without any database integration and backend. That will be done afterwards along with the deployment.
+## Brief
+> Create a new version of this website aligned to KEW's business with full creative freedom.
 
-## Architecture (current)
-- **Frontend**: Next.js 16.1.6 (App Router) + React 19 + Tailwind 3 + framer-motion + lucide-react. Runs on port 3000 via supervisor (`yarn start` → `next dev`).
-- **Backend**: FastAPI on port 8001 (under `/api/*` ingress route). Endpoints: `/api/health`, `/api/contact`, plus the original `/api/status` echo.
-- **Email**: Resend Python SDK 2.30.1 (`RESEND_API_KEY` env var; sender `onboarding@resend.dev`, recipient `kapooreng149@gmail.com`).
-- **DB**: MongoDB (used only for enquiry archival — no auth/data otherwise).
+## Concept
+**"Forge House"** — editorial magazine meets industrial brutalism. Light mode (deliberate departure from V1/V2's dark theme), Bauhaus engineering catalog aesthetic, Swiss high-contrast layout.
 
-## File Structure
-```
-/app
-├── backend/
-│   ├── server.py            # /api/health, /api/contact, /api/status, Resend wiring, honeypot, rate-limit, MongoDB archival
-│   ├── .env                 # MONGO_URL, DB_NAME, RESEND_API_KEY (blank — user adds), SENDER_EMAIL, RECIPIENT_EMAIL
-│   ├── requirements.txt     # FastAPI + resend SDK
-│   └── tests/test_contact_api.py   # 8/8 pytest cases
-└── frontend/
-    ├── app/                 # layout.js, page.js, about/, products/, services/, projects/, contact/, not-found.js
-    ├── components/
-    │   ├── Navbar.js, Footer.js, Hero.js, About.js, Products.js, Services.js, Projects.js
-    │   ├── ContactForm.js   # POST to /api/contact w/ honeypot + error UI
-    │   ├── FloatingActions.js  # Persistent WhatsApp + back-to-top
-    │   ├── AboutContent.js  # Client component for /about (animated)
-    │   └── motion/
-    │       ├── Reveal.js    # Reveal, Stagger, StaggerItem
-    │       ├── CountUp.js   # Animated number counter
-    │       └── MagneticLink.js  # Magnetic-hover CTAs
-    ├── data/products.js, projects.js
-    ├── lib/site.js          # Centralised phone/email/address + WhatsApp/tel/mailto helpers
-    ├── public/logos/        # Brand image assets
-    └── .env                 # REACT_APP_BACKEND_URL + NEXT_PUBLIC_BACKEND_URL
-```
+## Visual System (Archetype 4 — Swiss High-Contrast)
+- **Palette**: pure white #FFFFFF + ink black #0A0A0A + Safety Orange #FF3B00 + cream paper #F4F4F0
+- **Typography**: Archivo Black (display) + IBM Plex Sans (body) + JetBrains Mono (overlines/labels). No Inter, no Roboto, no purple gradients.
+- **Layout**: exposed 1px black-grid backgrounds. Hard 2px borders. Zero border-radius. Asymmetric 12-col layouts.
+- **Hover**: solid offset shadows (`shadow-brutal`). Instant grayscale → colour image flips. No soft glows.
+- **Motion**: Lenis smooth scroll + Framer Motion staggered reveals. Brutal cuts, no fades.
 
-## Implemented
+## Pages Built
+1. **Home** — `/`
+   - Editorial split hero ("FORGED FOR INDUSTRY." with file-system overlay on the workshop image)
+   - Orange marquee strip (infinite scroll of capabilities)
+   - About snippet with giant outlined "19" + 4-cell bento spec grid
+   - Services strip — full-bleed brutalist rows, hover-preview image card on desktop
+   - Projects gallery — asymmetric bento (one large + three smaller, B&W → colour on hover)
+   - Trust grid — 8-cell client matrix with hover invert
+   - Massive orange "GOT A JOB? LET'S TALK." CTA section
+2. **Catalog** (`/products`) — material rows with image + spec sheet table, alternating orientation
+3. **Capabilities** (`/services`) — three deep-dive sections with numbered deliverables tables
+4. **Works** (`/projects`) — 5-tile asymmetric gallery with slide-up project info cards
+5. **Studio** (`/about`) — oversized "19 YRS" hero in orange, 3 brutalist principles, timeline
+6. **Contact** (`/contact`) — 4-channel sidebar (phone / WhatsApp green / email / workshop+map) + brutalist enquiry form (still wired to FastAPI + Resend backend)
+7. **404** — giant outlined "404" with the middle 0 in safety orange + "We don't make this part."
 
-### Iteration 1 (Jan 13, 2026)
-- Migrated GitHub repo into workspace, fixed 3 production-breaking bugs (image paths, case-sensitive folder, orphaned Contact.js)
-- Cleaned junk (`Help/`, unused SVGs, `.vscode/`, stale lockfile, dead footer links)
-- Added: validated contact form (mailto: handoff at the time), floating WhatsApp + back-to-top, custom 404 page, Google Maps link, full SEO metadata, auto-calculated years-of-experience, clickable footer phone/email, centralized site config (`lib/site.js`)
-- 16/16 frontend flows passed
+## What's Reused vs Net New
+- ✅ **Net new**: every component (Navbar, Footer, Hero, Marquee, AboutSnippet, ServicesStrip, ProjectsGallery, TrustGrid, ContactCTA, SmoothScroll, FloatingActions rebuilt brutalist, all 7 pages)
+- ✅ **Kept working**: ContactForm backend wiring (POST /api/contact with honeypot + rate-limit + Resend email — restyled to brutalist form aesthetic)
+- ✅ **Kept**: `lib/site.js` (centralized contact info)
+- ❌ **Removed**: old components (Hero.js/About.js/Products.js/Services.js/Projects.js/AboutContent.js, motion/ helpers)
 
-### Iteration 2 (Jan 13, 2026)
-- **Backend + Resend integration**:
-  - `POST /api/contact` with: Pydantic validation, honeypot anti-spam (`website` field), in-memory rate limit (5/hour per IP), HTML+plain-text email template, MongoDB archival, async non-blocking Resend send (`asyncio.to_thread`), `reply_to` set to enquirer
-  - `GET /api/health` returns email config status
-  - Pytest suite (8/8 passing): /app/backend/tests/test_contact_api.py
-- **Frontend contact form rewired**: now POSTs to `/api/contact`, shows server error in `data-testid='contact-server-error'` with backend's `detail` text, hidden honeypot input, success state UI unchanged
-- **Framer-motion scroll-reveal animations**:
-  - Hero: parallax background image, staggered text entrance, magnetic CTA buttons that follow cursor
-  - About/Products/Services/Projects: Reveal + Stagger card cascades
-  - CountUp animated number on "Years Experience" stat (both homepage and About page)
-  - Respects `prefers-reduced-motion` user setting
-- 100% pass — 8/8 backend + 16/16 frontend
+## Tech
+- Next.js 16 + React 19 + Tailwind 3 (custom config with new font/colour tokens)
+- framer-motion (staggered reveals, hover image previews)
+- lenis (smooth scroll wrapper)
+- react-fast-marquee (orange capability marquee)
+- lucide-react (sparingly — most icons replaced with mono glyphs ↗ → ☎ ✱)
 
-## Pending User Action
-- ⏳ **Add Resend API key**: Sign up at https://resend.com → API Keys → Create. Paste into `RESEND_API_KEY` in `/app/backend/.env`. Until done, valid form submissions return a friendly 503 directing users to call/WhatsApp.
-
-## Backlog (P1)
-- Replace stock Unsplash photos with real workshop photography (user has not provided yet — kept Unsplash for now)
-- Verify own domain in Resend (e.g., `kapoorengineering.in`) so emails come from `enquiries@kapoorengineering.in` instead of `onboarding@resend.dev`
-- Move rate-limiter to Redis (in-memory bucket resets on restart and doesn't see real IPs through Kubernetes ingress)
-- Tighten CORS to actual production origin after deployment
-- Trust `X-Forwarded-For` header for rate-limit key
-
-## Backlog (P2)
-- Individual product detail pages (`/products/[slug]`)
-- Hindi/English language toggle
-- Blog/news section for local SEO
-- Project lightbox gallery
-- Testimonials carousel
-- Schema.org LocalBusiness JSON-LD for Google local-pack visibility
-- Admin dashboard to view archived enquiries
-
-## Deployment Notes
-- Frontend: Next.js, ready for Vercel
-- Backend: FastAPI, deploys anywhere (Railway, Render, Fly, etc.). Needs `MONGO_URL`, `DB_NAME`, `RESEND_API_KEY`, `RECIPIENT_EMAIL`, `SENDER_EMAIL`.
-- After deployment update `NEXT_PUBLIC_BACKEND_URL` in frontend env to the public backend URL.
+## Verification
+- All 7 routes return correct status codes (6× 200 + 1× 404)
+- Frontend boots clean on supervisor
+- Backend contact endpoint still wired and operational with live Resend key
+- Mobile-first (every grid collapses gracefully — verified up to ~375px width during build)

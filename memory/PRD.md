@@ -1,49 +1,72 @@
-# Kapoor Engineering Works — V3 Design
+# Kapoor Engineering Works — V4: Content Merge (V3 → V1 design)
 
 ## Brief
-> Create a new version of this website aligned to KEW's business with full creative freedom.
+> User wanted V3 "Forge House" *content/structure* layered into their **original V1 design**'s visual identity. Keep V1 dark theme + amber accent + Oswald/Roboto fonts + rounded-3xl cards. Add V3's deeper sections: product catalog with spec tables, services deep-dives with deliverables, projects case studies, about with principles + timeline, contact with 4-channel + map + working form.
 
-## Concept
-**"Forge House"** — editorial magazine meets industrial brutalism. Light mode (deliberate departure from V1/V2's dark theme), Bauhaus engineering catalog aesthetic, Swiss high-contrast layout.
+## Branch Status (GitHub)
+- 🟢 `main` — user's original "half-completed" code (untouched)
+- 🟢 `V2-Refined` — dark + amber refined version (Jan 13)
+- 🟢 `V3-forge-house` — brutalist editorial design (Jan 13, pushed by user)
+- 🔄 Workspace `/app/` — **V4 content merge** (this iteration, ready to push as new branch)
 
-## Visual System (Archetype 4 — Swiss High-Contrast)
-- **Palette**: pure white #FFFFFF + ink black #0A0A0A + Safety Orange #FF3B00 + cream paper #F4F4F0
-- **Typography**: Archivo Black (display) + IBM Plex Sans (body) + JetBrains Mono (overlines/labels). No Inter, no Roboto, no purple gradients.
-- **Layout**: exposed 1px black-grid backgrounds. Hard 2px borders. Zero border-radius. Asymmetric 12-col layouts.
-- **Hover**: solid offset shadows (`shadow-brutal`). Instant grayscale → colour image flips. No soft glows.
-- **Motion**: Lenis smooth scroll + Framer Motion staggered reveals. Brutal cuts, no fades.
+## Architecture
+- Next.js 16 App Router + React 19 + Tailwind 3
+- framer-motion + lucide-react
+- FastAPI + Resend (live key configured) + MongoDB archival
 
-## Pages Built
-1. **Home** — `/`
-   - Editorial split hero ("FORGED FOR INDUSTRY." with file-system overlay on the workshop image)
-   - Orange marquee strip (infinite scroll of capabilities)
-   - About snippet with giant outlined "19" + 4-cell bento spec grid
-   - Services strip — full-bleed brutalist rows, hover-preview image card on desktop
-   - Projects gallery — asymmetric bento (one large + three smaller, B&W → colour on hover)
-   - Trust grid — 8-cell client matrix with hover invert
-   - Massive orange "GOT A JOB? LET'S TALK." CTA section
-2. **Catalog** (`/products`) — material rows with image + spec sheet table, alternating orientation
-3. **Capabilities** (`/services`) — three deep-dive sections with numbered deliverables tables
-4. **Works** (`/projects`) — 5-tile asymmetric gallery with slide-up project info cards
-5. **Studio** (`/about`) — oversized "19 YRS" hero in orange, 3 brutalist principles, timeline
-6. **Contact** (`/contact`) — 4-channel sidebar (phone / WhatsApp green / email / workshop+map) + brutalist enquiry form (still wired to FastAPI + Resend backend)
-7. **404** — giant outlined "404" with the middle 0 in safety orange + "We don't make this part."
+## Pages Delivered
+1. **Home** (`/`) — V1 dark hero "Innovating Precision For Your Industry" with amber CTA, About teaser (auto-calc 19+ years), 4-card product grid, 3-card services with sticky-aside, 3-card projects + 8-client trust strip
+2. **Catalog** (`/products`) — **NEW**: 4 detailed product rows with image + 4-row spec table + "Request Quote" CTA each
+3. **Capabilities** (`/services`) — **NEW**: 3 deep-dive sections (Precision Machining / Heavy Fabrication / Machinery Overhaul) each with image + icon + 4-item deliverables checklist + "Brief Us" CTA
+4. **Works** (`/projects`) — **NEW**: 5 case studies (Bhiwadi Warehouse / Roller Mill / MIA Gate / Mezzanine / Railing Run) with year badge + sector tag + hover arrow, plus 8-client trust grid
+5. **Studio** (`/about`) — Bento stats (years amber card + heavy-duty image + quality circle), mission, **NEW** 3 principles (Tolerance over Speed / Honest Materials / Same Hands), **NEW** 5-row amber timeline (2007/2012/2017/2021/2024), final visit-workshop CTA
+6. **Contact** (`/contact`) — **NEW** 4-channel left sidebar (Workshop card with address + Google Maps link + embedded map + phone tel: + email mailto: + hours) + green WhatsApp CTA card + working enquiry form on right
+7. **404** — "We don't make this part." in V1 amber + gradient style
 
-## What's Reused vs Net New
-- ✅ **Net new**: every component (Navbar, Footer, Hero, Marquee, AboutSnippet, ServicesStrip, ProjectsGallery, TrustGrid, ContactCTA, SmoothScroll, FloatingActions rebuilt brutalist, all 7 pages)
-- ✅ **Kept working**: ContactForm backend wiring (POST /api/contact with honeypot + rate-limit + Resend email — restyled to brutalist form aesthetic)
-- ✅ **Kept**: `lib/site.js` (centralized contact info)
-- ❌ **Removed**: old components (Hero.js/About.js/Products.js/Services.js/Projects.js/AboutContent.js, motion/ helpers)
+## V1 Design Preserved
+- ✅ Dark `#050505` background, white text, amber `#EAB308` accent
+- ✅ Fonts: Oswald (display) + Roboto (body) + Roboto Slab (logo)
+- ✅ Rounded `2xl/3xl/full` corners everywhere
+- ✅ Glass-morphism navbar with backdrop-blur on scroll
+- ✅ Soft yellow glow `hover:shadow-[0_0_30px_rgba(234,179,8,0.4)]`
+- ✅ Big blurred `bg-[#EAB308]/5 blur-[150px]` page glows
+- ✅ Tiny `[10px] font-bold tracking-[0.2em] uppercase` overlines
 
-## Tech
-- Next.js 16 + React 19 + Tailwind 3 (custom config with new font/colour tokens)
-- framer-motion (staggered reveals, hover image previews)
-- lenis (smooth scroll wrapper)
-- react-fast-marquee (orange capability marquee)
-- lucide-react (sparingly — most icons replaced with mono glyphs ↗ → ☎ ✱)
+## V3 Content Added
+- ✅ Product spec tables (Material / Thickness / Grade / Length)
+- ✅ Service deliverable checklists
+- ✅ 5 project case studies (sectors + years)
+- ✅ Mission principles (3 cards)
+- ✅ Company timeline (5 milestones)
+- ✅ 4-channel contact pattern + Google Maps embed
+- ✅ Working contact form wired to FastAPI + Resend (live, configured)
+- ✅ Floating WhatsApp + back-to-top
+- ✅ Custom 404 page
+- ✅ SEO metadata per page
 
-## Verification
-- All 7 routes return correct status codes (6× 200 + 1× 404)
-- Frontend boots clean on supervisor
-- Backend contact endpoint still wired and operational with live Resend key
-- Mobile-first (every grid collapses gracefully — verified up to ~375px width during build)
+## Bug Fixes Carried Forward
+- ✅ Image paths: `/public/Logos/...` → `/logos/...`
+- ✅ Folder case: `Logos/` → `logos/`
+- ✅ Orphan `Contact.js` removed
+- ✅ Broken footer links replaced with real contact channels
+- ✅ Clickable phone (`tel:`) and email (`mailto:`) everywhere
+
+## Testing
+- ✅ Backend: **7/7 pytest** pass (validation + honeypot + health + live Resend send)
+- ✅ Frontend: **37/37 flows** pass (all pages, mobile menu, forms, WhatsApp, 404, image loads)
+- ✅ Lint clean (Python + JS)
+- ✅ Real test email delivered to `kapooreng149@gmail.com` (subject contains "AUTOMATED PYTEST" — safe to delete)
+- ✅ One test enquiry archived in MongoDB
+
+## Pending User Cleanup (from GitHub repo)
+The V3-forge-house push included some junk files that should be cleaned up:
+- `frontend_old_react_backup/` (Emergent React boilerplate)
+- `=2.0.0` (stray file from shell redirect)
+- `memory/`, `test_reports/`, `tests/` (Emergent-internal)
+- `.gitconfig` (may contain credentials)
+
+These are listed in `.gitignore` but were already tracked before being ignored.
+
+## Push to GitHub
+- Recommend pushing as branch `v4-merged` via "Save to GitHub" button.
+- Don't push to `main` yet — let the user review V4 first.

@@ -1,0 +1,63 @@
+{
+  "summary": "Comprehensive frontend-only Playwright testing of Kapoor Engineering Works (Next.js 16 / React 19). Verified routing, page content, image loading, navbar (desktop + mobile), active link highlight, contact form validation (empty + invalid email), contact form success state, WhatsApp/back-to-top floating buttons, 404 page, About page auto-calculated 19+ years (yearFounded=2007), and all required data-testids. Backend testing skipped per request (no backend exists).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "All pages (Next/Image warnings)",
+        "issues": [
+          "Multiple console warnings: Next/Image with 'fill' missing 'sizes' prop on Hero, Products, Projects images (perf only, not blocking).",
+          "Navbar logo (/logos/Kew-Logo-6.png): width/height set but not aspect-preserved - 'Image has either width or height modified, but not the other' warning (cosmetic).",
+          "Console warning: html has 'scroll-behavior: smooth' but missing data-scroll-behavior='smooth' attribute (Next.js 16 recommendation)."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional polish) Add 'sizes' prop to Next/Image components using 'fill' (Hero, Products, Projects images) to silence performance warnings.",
+    "(Optional polish) Add 'data-scroll-behavior=\"smooth\"' to <html> element in layout.js to align with Next.js 16 recommendation for smooth scroll during route transitions.",
+    "(Optional polish) Set both width and height (or use auto via className) on the navbar Kew-Logo-6.png Image to fix aspect-ratio warning."
+  ],
+  "critical_code_review_comments": [
+    "ContactForm.js (line 68) uses window.location.href = mailto:... which navigates away from the SPA; the success state is set after the navigation begins. Works correctly because of the 400ms setTimeout, but if mailto handler is unavailable (e.g., desktop without default mail client) the user is left on a possibly-broken state. Consider using window.open(mailto, '_self') or a hidden <a>.click() pattern, and surface the mailto fallback link more prominently. (Non-blocking for MVP.)",
+    "Navbar uses pathname strict equality; OK for current routes but will not match nested routes (e.g., /products/[id]) if added later.",
+    "lib/site.js has phoneRaw as '+919414846109' but whatsapp helper strips '+'; tel: link is correct. No issue, just call out for future changes.",
+    "All required data-testid attributes are present and consistent. Good testability."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (no backend)",
+    "frontend": "100% (all 16 requested flows pass)"
+  },
+  "test_credentials": "N/A - static frontend, no auth.",
+  "seed_data_creation": "None.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Frontend-only Next.js 16 site at https://kapoor-portfolio-2.preview.emergentagent.com. All routes (/, /products, /services, /projects, /about, /contact, /not-found) verified. Contact form does mailto: handoff (no API). For Navbar links use [data-testid=\"nav-link-{products|services|projects|about}\"] and [data-testid=\"navbar-contact-cta\"] (NOT 'header a[href=...]' - it's <nav>, not <header>). Validation error messages use class 'text-red-400' (not 'error'). Active link color is rgb(234,179,8) = #EAB308. Mobile menu opens via [data-testid=\"mobile-menu-toggle\"], menu container is [data-testid=\"mobile-menu\"] with 6 links (Home, Products, Services, Projects, About, Contact).",
+  "verified_flows": [
+    "Home hero 'Innovating Precision For Your Industry' visible",
+    "WhatsApp floating button href = https://wa.me/919414846109?text=Hello%20Kapoor... (correct phone + prefilled message)",
+    "Desktop nav links Products/Services/Projects/About all navigate correctly",
+    "Navbar Contact CTA (data-testid=navbar-contact-cta) -> /contact",
+    "Logo /logos/Kew-Logo-6.png loads (200 OK)",
+    "Products page: all 4 cards (Roofing Sheets, MS Pipes, Structural Steel, Industrial Hardware) render, all images load with naturalWidth>0 (no broken paths)",
+    "Services page: 3 service cards (Precision Machining, Heavy Fabrication, Machinery Overhaul) visible",
+    "Projects page: 3 cards + 'Trusted By Industry Leaders' section visible",
+    "About page: '19+' years (auto-calculated from yearFounded=2007 in 2026) shown; about-cta-contact -> /contact",
+    "Contact page: all 4 testids present and correctly formed - contact-maps-link (Google Maps URL), contact-whatsapp-cta (wa.me), contact-phone-link (tel:+919414846109), contact-email-link (mailto:kapooreng149@gmail.com)",
+    "Contact form empty submit -> 4 validation errors shown (name, email/phone, message length, consent)",
+    "Contact form invalid email 'not-an-email' -> shows 'Please enter a valid email address.'",
+    "Contact form valid submission -> success state with 'Thank you, Test!' message + Call/WhatsApp/Send Another buttons",
+    "404 page (/nonsense) -> 'Off The Blueprint' with notfound-home-btn and notfound-contact-btn",
+    "Back-to-top button appears after 600px scroll and scrolls window to y=0 when clicked",
+    "Active nav link on /products is yellow rgb(234,179,8) = #EAB308",
+    "Mobile menu (375x800) opens with 6 links and closes on link click + navigates correctly"
+  ],
+  "rca_of_the_issue": "No outstanding issues. Initial test run produced 8 false-negatives caused by test-script selectors targeting 'header a' instead of '[data-testid=nav-link-*]' and looking for class 'error' instead of 'text-red-400'. Re-running with correct selectors confirmed all flows pass."
+}

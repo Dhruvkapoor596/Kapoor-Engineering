@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "name": "Kapoor Engineering Works (KEW)",
+    "type": "marketing_site",
+    "theme_archetype": "Archetype 4 (Swiss & High-Contrast)",
+    "mode": "Light",
+    "vibe": "Editorial magazine meets industrial brutalism. Bauhaus engineering catalog. High contrast, large display typography, rigid exposed grids, 1px hard borders, striking accents, intentional asymmetry."
+  },
+  "colors": {
+    "background_primary": "#FFFFFF",
+    "background_secondary": "#F4F4F0",
+    "text_primary": "#0A0A0A",
+    "text_secondary": "#4A4A4A",
+    "accent_primary": "#FF3B00",
+    "accent_hover": "#CC2F00",
+    "border_color": "#0A0A0A",
+    "muted_border": "rgba(10, 10, 10, 0.15)",
+    "structural_gray": "#E5E5E5"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Archivo Black, sans-serif",
+      "body": "IBM Plex Sans, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "hierarchy": {
+      "h1": "text-5xl md:text-7xl lg:text-[7vw] font-black tracking-tighter uppercase leading-none",
+      "h2": "text-4xl md:text-5xl font-black tracking-tight uppercase leading-none",
+      "h3": "text-2xl md:text-3xl font-bold tracking-tight",
+      "body": "text-base md:text-lg text-text-secondary leading-relaxed",
+      "overline": "text-xs md:text-sm font-mono tracking-[0.2em] uppercase text-accent-primary font-bold",
+      "big_numbers": "text-7xl md:text-9xl font-black text-transparent [-webkit-text-stroke:2px_#0A0A0A]"
+    },
+    "custom_instructions": "DO NOT use Inter or Roboto. Emphasize tracking-tighter for headings and tracking-widest for mono overlines. Use massive typography as a structural design element. Typography should feel loud but highly disciplined."
+  },
+  "spacing_and_layout": {
+    "container": "max-w-none w-full px-4 md:px-8 lg:px-12",
+    "section_padding": "py-24 md:py-32",
+    "grid_system": "grid grid-cols-1 md:grid-cols-12 gap-px bg-black border-y border-black",
+    "bento_grid": "When creating grids, set the container background to black and gap to 1px or 2px, and children to background white. This creates a flawless exposed 'blueprint' grid look.",
+    "borders": "Heavy use of hard borders. border-black border-2.",
+    "alignment": "Strict left-alignment for text. Use asymmetric column spans (e.g., col-span-4 vs col-span-8)."
+  },
+  "surfaces": {
+    "cards": "bg-white border-2 border-black rounded-none transition-transform hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_#0A0A0A]",
+    "buttons": {
+      "primary": "bg-accent-primary text-white font-mono uppercase tracking-widest text-sm py-4 px-8 border-2 border-black rounded-none hover:bg-black transition-colors flex items-center justify-between group",
+      "secondary": "bg-transparent text-text-primary font-mono uppercase tracking-widest text-sm py-4 px-8 border-2 border-black rounded-none hover:bg-accent-primary hover:text-white transition-colors"
+    },
+    "inputs": "bg-white border-2 border-black rounded-none px-4 py-4 focus:outline-none focus:ring-0 focus:border-accent-primary font-mono text-sm placeholder:text-black/40"
+  },
+  "components": {
+    "navbar": "Sticky top-0 z-50 bg-white border-b-2 border-black flex justify-between items-center px-4 md:px-8 py-4. Links must be uppercase mono. Add a solid bottom shadow if scrolling.",
+    "hero": "Min-h-[90vh] flex flex-col justify-between border-b-2 border-black. Top half: massive text 'INDUSTRIAL SOLUTIONS'. Bottom half: split grid with text description and a high-contrast industrial image.",
+    "marquee": "Use react-fast-marquee. border-y-2 border-black py-4 bg-accent-primary text-black font-heading text-4xl uppercase overflow-hidden whitespace-nowrap",
+    "projects_gallery": "Large stark image grids with visible borders separating them. Images should have grayscale filters that turn colored on hover.",
+    "footer": "Massive typography 'KEW.', strict grid layout for links, black background with white text."
+  },
+  "media": {
+    "hero_image": {
+      "url": "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzR8MHwxfHNlYXJjaHwyfHxpbmR1c3RyaWFsJTIwcHJlY2lzaW9uJTIwbWFjaGluaW5nJTIwc3RlZWwlMjBmYWN0b3J5fGVufDB8fHx8MTc4MTM0OTU0N3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Massive industrial factory interior, moody lighting.",
+      "placement": "Home page hero section"
+    },
+    "services": [
+      {
+        "title": "Precision Machining",
+        "url": "https://images.unsplash.com/photo-1717386255767-52643970d483?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzR8MHwxfHNlYXJjaHw0fHxpbmR1c3RyaWFsJTIwcHJlY2lzaW9uJTIwbWFjaGluaW5nJTIwc3RlZWwlMjBmYWN0b3J5fGVufDB8fHx8MTc4MTM0OTU0N3ww&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "title": "Heavy Metal Fabrication",
+        "url": "https://images.unsplash.com/photo-1698664683348-f9f35b809821?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwyfHxoZWF2eSUyMG1ldGFsJTIwZmFicmljYXRpb24lMjB3ZWxkaW5nJTIwc3BhcmtzfGVufDB8fHx8MTc4MTM0OTU0N3ww&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "title": "Structural Steel",
+        "url": "https://images.unsplash.com/photo-1493476523860-a6de6ce1b0c3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxzdHJ1Y3R1cmFsJTIwc3RlZWwlMjBjb25zdHJ1Y3Rpb24lMjBiZWFtc3xlbnwwfHx8fDE3ODEzNDk1NDd8MA&ixlib=rb-4.1.0&q=85"
+      }
+    ],
+    "textures": {
+      "blueprint": "https://images.unsplash.com/photo-1542621334-a254cf47733d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzV8MHwxfHNlYXJjaHwxfHxhcmNoaXRlY3R1cmFsJTIwYmx1ZXByaW50fGVufDB8fHx8MTc4MTM0OTU1Nnww&ixlib=rb-4.1.0&q=85",
+      "raw_metal": "https://images.unsplash.com/photo-1578922427288-a47338083a57?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxyYXclMjBtZXRhbCUyMHRleHR1cmV8ZW58MHx8fHwxNzgxMzQ5NTU2fDA&ixlib=rb-4.1.0&q=85"
+    },
+    "local_assets": [
+      "/logos/Background-Kew.png",
+      "/logos/Kew-Logo-*.png",
+      "/logos/ms-pipe-in-lucknow.jpg",
+      "/logos/STRUCTURE-STEELBEAMS-CHANNELS-ANGLE-IPE.jpg"
+    ]
+  },
+  "animations": {
+    "page_transitions": "Use Framer Motion. Keep it brutal: sudden slides, hard cuts, or fast unmasking rather than slow fades.",
+    "hover_states": "Instant, high contrast changes. Solid shadows appear instantly (no ease-in-out). Image filters shift from grayscale to full color.",
+    "scroll": "Lenis smooth scroll is MANDATORY for premium feel."
+  },
+  "accessibility": {
+    "contrast": "Extremely high. Black on white, White on Black. Accent color must be checked for readability.",
+    "focus": "focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 rounded-none",
+    "motion": "Respect prefers-reduced-motion."
+  },
+  "pages_structure": {
+    "Home": [
+      "Hero: Editorial split. Massive 'KEW 07' text. Scroll down indicator.",
+      "Marquee: Infinite scrolling 'PRECISION MACHINING • HEAVY FABRICATION • STRUCTURAL STEEL'.",
+      "About snippet: Bauhaus grid. 19+ Years large number. 'Built on Iron, Driven by Precision.'",
+      "Services Strip: Accordion or hover-expandable brutalist list.",
+      "Projects snippet: Asymmetrical bento box of images.",
+      "Trust/Clients: Grid of logos with hard borders.",
+      "Contact CTA: Massive block color section (Safety Orange background, black text)."
+    ],
+    "Products": "Grid-based catalog. 4 categories: Roofing Sheets, MS Pipes, Structural Steel, Industrial Hardware. Use technical tables for specs instead of soft cards.",
+    "Services": "Deep dives into Precision Machining, Heavy Fabrication, Machinery Overhaul. Use the raw metal and blueprint textures as backgrounds. Include technical numbers (01, 02, 03).",
+    "Projects": "Masonry or strict grid gallery. Hover over text to reveal image (editorial interaction) or standard high-contrast cards.",
+    "About": "Company story. Use oversized typography for the 2007 founding year. Show the factory interior image.",
+    "Contact": "Hard-edged form. Input fields have thick borders, no border-radius. Embedded map with grayscale CSS filter. Floating WhatsApp icon.",
+    "404": "Massive '404' outlined text. 'SYSTEM FAULT' or 'PAGE NOT FOUND' in mono font."
+  },
+  "instructions_to_main_agent": [
+    "You are building a brutalist, Bauhaus-inspired engineering site.",
+    "DO NOT use standard Shadcn card styles (no soft shadows, no border-radius). Override them with hard 2px borders, square corners, and solid box shadows.",
+    "Install and use: framer-motion, lucide-react, react-fast-marquee, @studio-freight/react-lenis (for smooth scrolling).",
+    "Install fonts: next/font/google with 'IBM Plex Sans' and 'JetBrains Mono'. For heading font, use 'Archivo Black' or 'Bebas Neue' to give a massive, heavy industrial feel.",
+    "All interactive and key informational elements MUST include a data-testid attribute in kebab-case format.",
+    "Images MUST be sourced from the 'media' object or local '/logos/' folder. Never use placeholders.",
+    "Create a responsive, mobile-first design, but utilize CSS Grid extensively for desktop layouts. The grid should be visually exposed using 1px or 2px borders."
+  ]
+}
